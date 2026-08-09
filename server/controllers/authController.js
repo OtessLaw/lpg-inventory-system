@@ -7,6 +7,37 @@ const generateToken = (id) => {
   });
 };
 
+// Helper: Ensure default Admin & Staff accounts exist in DB if missing
+const ensureDefaultUsers = async () => {
+  try {
+    let admin = await User.findOne({ email: 'admin@example.com' });
+    if (!admin) {
+      admin = await User.create({
+        name: 'System Admin',
+        email: 'admin@example.com',
+        password: 'ChangeThisPassword123!',
+        role: 'admin',
+        isActive: true,
+      });
+      console.log('[Auto-Heal] Created default Admin user account in DB');
+    }
+
+    let staff = await User.findOne({ email: 'staff@example.com' });
+    if (!staff) {
+      staff = await User.create({
+        name: 'Store Staff',
+        email: 'staff@example.com',
+        password: 'ChangeThisPassword123!',
+        role: 'staff',
+        isActive: true,
+      });
+      console.log('[Auto-Heal] Created default Staff user account in DB');
+    }
+  } catch (err) {
+    console.error('[Auto-Heal Warning] Failed to ensure default users:', err.message);
+  }
+};
+
 // @desc    Authenticate user & get token
 // @route   POST /api/auth/login
 // @access  Public
@@ -22,7 +53,12 @@ const login = async (req, res, next) => {
       });
     }
 
-    const user = await User.findOne({ email }).select('+password');
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Auto-provision default accounts if DB is fresh or empty
+    await ensureDefaultUsers();
+
+    let user = await User.findOne({ email: cleanEmail }).select('+password');
     if (!user) {
       return res.status(401).json({
         success: false,
