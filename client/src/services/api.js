@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Automatically uses environment API URL in cloud production (e.g., Render) or /api proxy in local development
-const baseURL = import.meta.env.VITE_API_URL || '/api';
+// Hardcoded fallback to live Render backend URL for 100% reliable cloud production execution
+const baseURL = import.meta.env.VITE_API_URL || 'https://lpg-inventory-system.onrender.com/api';
 
 const API = axios.create({
   baseURL,
