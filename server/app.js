@@ -19,18 +19,18 @@ const app = express();
 app.use(helmet());
 
 // CORS configuration
-const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+const clientUrl = process.env.CLIENT_URL || 'http://localhost:5188';
 app.use(
   cors({
-    origin: [clientUrl, 'http://127.0.0.1:5173', 'http://localhost:5173'],
+    origin: '*', // Allow all client origins in production API
     credentials: true,
   })
 );
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // limit each IP to 300 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 500,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -44,6 +44,16 @@ app.use('/api', limiter);
 // Body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Root Welcome API Route
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'LPG Cooking Gas Inventory System Backend API is Live & Running!',
+    healthCheck: '/api/health',
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // Health Check API
 app.get('/api/health', (req, res) => {
