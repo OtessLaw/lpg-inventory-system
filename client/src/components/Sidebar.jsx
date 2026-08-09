@@ -42,13 +42,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       )}
 
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-60 bg-slate-950 border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 bottom-0 z-50 h-screen w-60 bg-slate-950 border-r border-slate-800/80 transform transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col justify-between ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between h-16 px-5 border-b border-slate-800/80">
+          {/* Top Branding */}
+          <div className="flex items-center justify-between h-16 px-5 border-b border-slate-800/80 shrink-0">
             <div className="flex items-center space-x-2.5">
               <div className="p-1.5 bg-orange-500 rounded-lg text-white">
                 <Flame className="w-5 h-5" />
@@ -62,7 +62,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </button>
           </div>
 
-          {/* Nav Items */}
+          {/* Navigation Links spanning remaining height */}
           <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -73,7 +73,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   end={item.path === '/dashboard'}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center px-3.5 py-2.5 rounded-xl text-xs font-semibold transition ${
+                    `flex items-center px-3.5 py-3 rounded-xl text-xs font-semibold transition ${
                       isActive
                         ? 'bg-orange-500 text-white font-bold shadow-md'
                         : 'text-slate-400 hover:text-white hover:bg-slate-900'

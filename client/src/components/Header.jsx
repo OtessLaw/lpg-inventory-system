@@ -12,7 +12,7 @@ const Header = ({ onOpenSidebar, title }) => {
   });
 
   return (
-    <header className="sticky top-0 z-30 h-16 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-8 flex items-center justify-between">
+    <header className="sticky top-0 z-30 h-16 w-full bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
       <div className="flex items-center space-x-3">
         <button
           onClick={onOpenSidebar}
